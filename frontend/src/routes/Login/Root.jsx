@@ -2,7 +2,7 @@ import { useState } from "react";
 import SigninForm from "../../components/Signin";
 import SignupForm from "../../components/Signup";
 export default function Login() {
-  const [auth, setAuth] = useState("login");
+  const [auth, setAuth] = useState("signup");
   const toggleAuth = () => {
     setAuth(auth === "login" ? setAuth("signup") : setAuth("login"));
   };
