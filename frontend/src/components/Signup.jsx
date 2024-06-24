@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+
 export default function SignupForm({ setFormAuth }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -7,30 +8,46 @@ export default function SignupForm({ setFormAuth }) {
     password: "",
     confirmPassword: "",
   });
+  const [accessToken, setAccessToken] = useState(null);
+
+  const [refreshToken, setRefreshToken] = useState(
+    localStorage.getItem("refresh_token")
+  );
+
+  const [resourceOwner, setResourceOwner] = useState(null);
+
+  // Storing authentication in local storage
+  const handleAuthResponse = async (response) => {
+    const data = await response.json();
+
+    console.log(data);
+
+    //   localStorage.setItem("resource_owner", JSON.stringify(data.resource_owner));
+    //   localStorage.setItem("refresh_token", data.refresh_token);
+
+    //   setAccessToken(data.token);
+    //   setRefreshToken(data.refresh_token);
+    //   setResourceOwner(data.resource_owner);
+    // };
+  };
   const onSubmit = async (e) => {
     e.preventDefault();
     const url = "http://localhost:3000/users/tokens/sign_up";
+    const { name, email, password, confirmPassword } = formData;
 
-    if (
-      formData.name.length === 0 ||
-      formData.email.length === 0 ||
-      formData.password.length === 0 ||
-      formData.confirmPassword.length === 0
-    ) {
+    if (!name || !email || !password || !confirmPassword) {
       alert("Empty field");
       return;
     }
-
-    if (formData.password !== formData.confirmPassword) {
+    if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
+
     const body = {
-      user: {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      },
+      name,
+      email,
+      password,
     };
 
     try {
@@ -42,16 +59,23 @@ export default function SignupForm({ setFormAuth }) {
         body: JSON.stringify(body),
       });
 
-      const result = await response.json();
-      console.log("Success:", result);
+      // If form submission was successful then save refresh token to local storage
+      // and direct user to log in form
+      if (response.ok) {
+        handleAuthResponse(response);
+        setFormAuth("login");
+      } else {
+        const errorResult = await response.json();
+        console.error("Error:", errorResult);
+      }
     } catch (error) {
       console.error("Error:", error);
     }
+    setFormAuth("login");
   };
+
   const handleInput = (e) => {
     const { id, value } = e.target;
-    // console.log(id);
-    // console.log(value);
     setFormData({ ...formData, [id]: value });
   };
   return (
