@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-export default function SignupForm() {
+export default function SignupForm({ setFormAuth }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -102,7 +102,12 @@ export default function SignupForm() {
       </form>
       <p className="text-slate-700 mt-5">
         Already have an account?{" "}
-        <Link className="text-messenger-blue">Sign In</Link>
+        <button
+          onClick={() => setFormAuth("login")}
+          className="text-messenger-blue"
+        >
+          Sign In
+        </button>
       </p>
     </>
   );

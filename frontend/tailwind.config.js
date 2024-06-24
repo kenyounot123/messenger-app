@@ -9,6 +9,7 @@ export default {
         "gradient-grey": "#999999",
         "gradient-box-grey": "#737373",
         "gradient-box-white": "#D9D9D9",
+        "accent-color": "#FFB300",
       },
     },
   },

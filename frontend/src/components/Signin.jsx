@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-export default function SigninForm() {
+export default function SigninForm({ setFormAuth }) {
   return (
     <>
       <form className="flex w-1/2 flex-col">
@@ -36,7 +36,7 @@ export default function SigninForm() {
           Log In{" "}
         </button>
         <button
-          className="text-white py-1 bg-[#FFB300] rounded-md mt-1"
+          className="text-white py-1 bg-accent-color rounded-md mt-1"
           type="submit"
         >
           {" "}
@@ -55,7 +55,12 @@ export default function SigninForm() {
       </div>
       <p className="text-slate-700 mt-5">
         Dont have an account?{" "}
-        <Link className="text-messenger-blue">Sign Up</Link>
+        <button
+          onClick={() => setFormAuth("signup")}
+          className="text-messenger-blue"
+        >
+          Sign Up
+        </button>
       </p>
     </>
   );
