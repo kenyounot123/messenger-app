@@ -1,8 +1,10 @@
-# React + Vite
+# Messenger App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a simple web-based messaging app that allows users to send messages to each other. Users can create and customize their profiles, authorize their accounts, and engage in one-on-one conversations with real time updates.
 
-Currently, two official plugins are available:
+# Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React for frontend
+- Ruby on Rails for backend
+- Devise-api gem for user authentication
+- Deployed using Vercel
