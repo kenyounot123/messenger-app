@@ -26,9 +26,11 @@ export default function SignupForm({ setFormAuth }) {
       return;
     }
     const body = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
+      user: {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      },
     };
 
     try {
