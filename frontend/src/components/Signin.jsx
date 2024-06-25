@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 export default function SigninForm({ setFormAuth }) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -12,17 +13,19 @@ export default function SigninForm({ setFormAuth }) {
   };
   const handleSignIn = async (e) => {
     e.preventDefault();
+    const url = "http://localhost:3000/users/tokens/sign_in";
 
     const { name, email, password } = formData;
     const body = { email, password };
 
-    const response = await fetch("http://localhost:3000/users/tokens/sign_in", {
+    const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" },
     });
     if (response.ok) {
       console.log("Success");
+      navigate("/home");
     } else {
       const errorResult = await response.json();
       console.error("Error:", errorResult);
@@ -57,10 +60,7 @@ export default function SigninForm({ setFormAuth }) {
           {" "}
           Log In{" "}
         </button>
-        <button
-          className="text-white py-1 bg-accent-color rounded-md mt-1"
-          type="submit"
-        >
+        <button className="text-white py-1 bg-accent-color rounded-md mt-1">
           {" "}
           Log in as Guest{" "}
         </button>

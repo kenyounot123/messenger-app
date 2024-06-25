@@ -71,7 +71,6 @@ export default function SignupForm({ setFormAuth }) {
     } catch (error) {
       console.error("Error:", error);
     }
-    setFormAuth("login");
   };
 
   const handleInput = (e) => {
