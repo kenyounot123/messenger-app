@@ -1,19 +1,24 @@
 import { SettingsIcon, ChatIcon, Icon } from "@chakra-ui/icons";
 import { CgProfile } from "react-icons/cg";
+import Avatar from "./Avatar";
 export default function Sidebar() {
   return (
-    <div className="flex lg:flex-col gap-10">
+    <div className="flex items-center lg:flex-col gap-10">
       <div className="text-center">
         {" "}
-        <ChatIcon boxSize={30} />{" "}
+        <Avatar />
       </div>
       <div className="text-center">
         {" "}
-        <SettingsIcon boxSize={30} />{" "}
+        <ChatIcon color="white" boxSize={30} />{" "}
       </div>
       <div className="text-center">
         {" "}
-        <Icon as={CgProfile} boxSize={30} />{" "}
+        <SettingsIcon color="white" boxSize={30} />{" "}
+      </div>
+      <div className="text-center">
+        {" "}
+        <Icon as={CgProfile} color="white" boxSize={30} />{" "}
       </div>
     </div>
   );
