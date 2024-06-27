@@ -24,7 +24,14 @@ export default function SigninForm({ setFormAuth }) {
       headers: { "Content-Type": "application/json" },
     });
     if (response.ok) {
-      console.log("Success");
+      const data = await response.json();
+      console.log(data);
+      localStorage.setItem(
+        "resource_owner",
+        JSON.stringify(data.resource_owner)
+      );
+      localStorage.setItem("refresh_token", data.refresh_token);
+      localStorage.setItem("token", data.token);
       navigate("/home");
     } else {
       const errorResult = await response.json();

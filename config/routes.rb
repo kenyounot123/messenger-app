@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
   get 'pages/home'
   get 'pages/restricted'
+
+  namespace :api do 
+    namespace :v1 do 
+      resources :users, only: [:index, :edit, :show, :update]
+    end
+  end
+
   devise_for :users
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
