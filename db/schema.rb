@@ -14,10 +14,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_27_193302) do
   create_table "chat_rooms", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "message_id", null: false
+  end
+
+  create_table "chat_rooms_users", id: false, force: :cascade do |t|
+    t.integer "chat_room_id", null: false
     t.integer "user_id", null: false
-    t.index ["message_id"], name: "index_chat_rooms_on_message_id"
-    t.index ["user_id"], name: "index_chat_rooms_on_user_id"
+    t.index ["chat_room_id", "user_id"], name: "index_chat_rooms_users_on_chat_room_id_and_user_id"
+    t.index ["user_id", "chat_room_id"], name: "index_chat_rooms_users_on_user_id_and_chat_room_id"
   end
 
   create_table "devise_api_tokens", force: :cascade do |t|
@@ -38,11 +41,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_27_193302) do
 
   create_table "messages", force: :cascade do |t|
     t.string "content", null: false
-    t.integer "user_received_id", null: false
-    t.integer "user_sent_id", null: false
+    t.integer "sender_id", null: false
     t.binary "img"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "chat_room_id", null: false
+    t.index ["chat_room_id"], name: "index_messages_on_chat_room_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -58,8 +63,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_27_193302) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "chat_rooms", "messages"
-  add_foreign_key "chat_rooms", "users"
-  add_foreign_key "messages", "users", column: "user_received_id"
-  add_foreign_key "messages", "users", column: "user_sent_id"
+  add_foreign_key "messages", "chat_rooms"
+  add_foreign_key "messages", "users", column: "sender_id"
 end
