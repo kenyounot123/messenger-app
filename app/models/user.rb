@@ -5,6 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :api
   validates :name, presence: true
   validates :email, presence: true
-  has_many :messages
-  has_many :chatrooms, through: :messages
+  has_many :messages, foreign_key: "sender_id"
+  has_and_belongs_to_many :chatrooms, dependent: :destroy
 end
