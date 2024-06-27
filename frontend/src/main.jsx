@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { UserProvider } from "./components/UserContext.jsx";
 import Root from "./routes/Login/Root.jsx";
 import Homepage from "./routes/Homepage/Homepage.jsx";
 
@@ -19,7 +20,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </ChakraProvider>
   </React.StrictMode>
 );

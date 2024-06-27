@@ -2,34 +2,14 @@ import Chat from "../../components/Chat";
 import SearchBar from "../../components/SearchBar";
 import Sidebar from "../../components/Sidebar";
 import MessageBox from "../../components/MessageBox";
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../components/UserContext";
 
 export default function Homepage() {
-  // State to store logged in user data
-  const [userData, setUserData] = useState(null);
+  const { userData, setUserData } = useContext(UserContext);
   // State to change the page displayed to user
   const [clickedPage, setClickedPage] = useState("chat");
-  useEffect(() => {
-    async function fetchData() {
-      const url = "http://localhost:3000/api/v1/users";
-      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
-
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setUserData(data);
-      } else {
-        console.error("Failed to fetch user data");
-        // Handle unauthorized access or other errors here
-      }
-    }
-    fetchData();
-  }, []);
 
   return (
     <div className="py-5 flex justify-center items-center h-screen w-screen bg-gradient-to-b from-gradient-top to-gradient-bot">

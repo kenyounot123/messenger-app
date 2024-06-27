@@ -4,22 +4,22 @@ import UserAvatar from "./UserAvatar";
 export default function Sidebar() {
   return (
     <div className="flex items-center lg:flex-col gap-10">
-      <div className="text-center">
+      <button className="text-center">
         {" "}
         <UserAvatar size="md" />
-      </div>
-      <div className="text-center">
+      </button>
+      <button className="text-center">
         {" "}
         <ChatIcon color="white" boxSize={30} />{" "}
-      </div>
-      <div className="text-center">
+      </button>
+      <button className="text-center">
         {" "}
         <Icon as={CgProfile} color="white" boxSize={30} />{" "}
-      </div>
-      <div className="text-center">
+      </button>
+      <button className="text-center">
         {" "}
         <SettingsIcon color="white" boxSize={30} />{" "}
-      </div>
+      </button>
     </div>
   );
 }

@@ -25,7 +25,6 @@ export default function SigninForm({ setFormAuth }) {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       localStorage.setItem(
         "resource_owner",
         JSON.stringify(data.resource_owner)
