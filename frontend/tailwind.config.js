@@ -5,11 +5,11 @@ export default {
     extend: {
       colors: {
         "messenger-blue": "#7A7AF3",
-        "gradient-black": "#020280",
-        "gradient-grey": "#999999",
-        "gradient-box-grey": "#737373",
-        "gradient-box-white": "#D9D9D9",
-        "accent-color": "#FFB300",
+        "gradient-top": "#614385",
+        "gradient-bot": "#7b8bb7",
+        "gradient-box-top": "#868F96",
+        "gradient-box-bot": "#596164",
+        "accent-color": "#F2DC79",
       },
     },
   },

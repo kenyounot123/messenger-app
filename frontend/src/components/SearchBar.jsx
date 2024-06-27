@@ -11,6 +11,8 @@ export default function SearchBar() {
       />
       <div className="absolute right-0 top-0 h-full flex items-center pr-2">
         <IconButton
+          bg={"#7A7AF3"}
+          color={"white"}
           aria-label="Search database"
           icon={<SearchIcon />}
           size="sm"
