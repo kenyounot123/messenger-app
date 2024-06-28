@@ -1,4 +1,4 @@
-import { SettingsIcon, ChatIcon, Icon } from "@chakra-ui/icons";
+import { SettingsIcon, ChatIcon, Icon, Search2Icon } from "@chakra-ui/icons";
 import { CgProfile } from "react-icons/cg";
 import UserAvatar from "./UserAvatar";
 export default function Sidebar() {
@@ -14,7 +14,7 @@ export default function Sidebar() {
       </button>
       <button className="text-center">
         {" "}
-        <Icon as={CgProfile} color="white" boxSize={30} />{" "}
+        <Search2Icon color="white" boxSize={30} />{" "}
       </button>
       <button className="text-center">
         {" "}
