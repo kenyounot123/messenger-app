@@ -8,20 +8,10 @@ export default function SignupForm({ setFormAuth }) {
     password: "",
     confirmPassword: "",
   });
-  const [accessToken, setAccessToken] = useState(null);
-
-  const [refreshToken, setRefreshToken] = useState(
-    localStorage.getItem("refresh_token")
-  );
-
-  const [resourceOwner, setResourceOwner] = useState(null);
 
   // Storing authentication in local storage
   const handleAuthResponse = async (response) => {
     const data = await response.json();
-
-    console.log(data);
-
     //   localStorage.setItem("resource_owner", JSON.stringify(data.resource_owner));
     //   localStorage.setItem("refresh_token", data.refresh_token);
 

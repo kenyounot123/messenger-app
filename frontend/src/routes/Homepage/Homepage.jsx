@@ -2,14 +2,15 @@ import Chat from "../../components/Chat";
 import SearchBar from "../../components/SearchBar";
 import Sidebar from "../../components/Sidebar";
 import MessageBox from "../../components/MessageBox";
+import ExploreUsersBox from "../../components/ExploreUsersBox";
 
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../components/UserContext";
 
 export default function Homepage() {
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData, loading } = useContext(UserContext);
   // State to change the page displayed to user
-  const [clickedPage, setClickedPage] = useState("chat");
+  const [clickedPage, setClickedPage] = useState("explore");
 
   return (
     <div className="py-5 flex justify-center items-center h-screen w-screen bg-gradient-to-b from-gradient-top to-gradient-bot">
@@ -24,7 +25,15 @@ export default function Homepage() {
           <Chat />
         </div>
         <div className="col-span-12 row-span-9 rounded-xl md:row-span-9 md:col-span-12 md:row-start-2 md:col-start-1 lg:col-start-5 lg:row-span-12 lg:row-start-1 bg-white">
-          <MessageBox />
+          {loading ? (
+            <div>Data loading...</div>
+          ) : (
+            <>
+              {clickedPage === "explore" && <ExploreUsersBox />}
+              {clickedPage === "profile" && <MessageBox />}
+              {clickedPage === "messages" && <MessageBox />}
+            </>
+          )}
         </div>
       </div>
     </div>
