@@ -19,16 +19,14 @@ const UserProvider = ({ children }) => {
         if (response.ok) {
           const data = await response.json();
           console.log(data);
-          console.log(loading);
           setUserData(data);
+          setLoading(false);
         } else {
           console.error("Failed to fetch user data");
           // Handle unauthorized access or other errors here
         }
       } catch (error) {
         console.log("error fetching user data: ", error);
-      } finally {
-        setLoading(false);
       }
     }
     fetchData();
