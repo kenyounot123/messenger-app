@@ -4,23 +4,32 @@ class Api::V1::UsersController < ApplicationController
   
   def index
     current_user = current_devise_api_token.resource_owner
-
+    other_users = all_other_users(current_user)
     # Render JSON including current user and all other users
     render json: {
-      current_user: current_user.as_json, # Adjust attributes as per your needs
-      other_users: all_other_users(current_user).as_json # Adjust attributes as per your needs
+      current_user: current_user,
+      other_users: other_users
     }
   end
 
   def all_other_users(current_user)
-    all_users = User.where.not(id: current_user.id)
-    all_users
+    User.where.not(id: current_user.id).map do |user|
+      {
+        name: user.name,
+        id: user.id,
+        joined_on: format_created_at_date(user.created_at),
+        email: user.email
+      }
+    end
   end
 
 
-  def users_explore_section()
+
+  def format_created_at_date(iso_date)
+    date = iso_date.to_datetime
+    date.strftime('%B %d %Y')
   end
-  
+
   def show
     devise_api_token = current_devise_api_token
     render json: devise_api_token.resource_owner.orders.find(params[:id]), status: :ok
