@@ -2,14 +2,14 @@ import { Textarea } from "@chakra-ui/react";
 import { PhoneIcon, BellIcon, SettingsIcon, LinkIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import UserAvatar from "./UserAvatar";
-export default function MessageBox({ user }) {
+export default function ChatWindow({ user }) {
   return (
-    <div className="m-5 flex flex-col">
-      <div className="flex items-center mb-5 gap-5 border-b-2 pb-5">
-        <UserAvatar size={"md"} />
+    <div className="p-5 h-full flex flex-col">
+      <div className="flex items-center mb-2 gap-5 border-b-2 pb-5">
+        <UserAvatar name={user.name} size={"md"} />
         {/* user.status and user.name */}
         <div className="grid grid-rows-2 grow">
-          <p className="font-bold">User Name</p>
+          <p className="font-bold">{user.name}</p>
           <p>Online</p>
         </div>
         <div className="flex gap-10">

@@ -3,10 +3,14 @@ import { UserContext } from "./UserContext";
 import UserAvatar from "./UserAvatar";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 
-export default function ExploreUsersBox({ setClickedPage }) {
+export default function ExploreUsersBox({
+  setClickedPage,
+  setCurrentChatUser,
+}) {
   const { userData, setUserData, loading } = useContext(UserContext);
 
-  const handleChatClick = () => {
+  const handleChatClick = (user) => {
+    setCurrentChatUser(user);
     setClickedPage("messages");
   };
   return (
@@ -17,7 +21,7 @@ export default function ExploreUsersBox({ setClickedPage }) {
         userData.other_users.map((user) => (
           <div
             key={user.id}
-            onClick={handleChatClick}
+            onClick={() => handleChatClick(user)}
             className="m-5 p-2 text-xs flex gap-5 border-b rounded-md hover:bg-slate-200"
           >
             <UserAvatar size={"md"} name={user.name} />

@@ -1,7 +1,7 @@
 import Chat from "../../components/Chat";
 import SearchBar from "../../components/SearchBar";
 import Sidebar from "../../components/Sidebar";
-import MessageBox from "../../components/MessageBox";
+import ChatWindow from "../../components/ChatWindow";
 import ExploreUsersBox from "../../components/ExploreUsersBox";
 
 import { useState, useEffect, useContext } from "react";
@@ -10,6 +10,7 @@ import { UserContext, UserProvider } from "../../components/UserContext";
 export default function Homepage() {
   // State to change the page displayed to user
   const [clickedPage, setClickedPage] = useState("explore");
+  const [currentChatUser, setCurrentChatUser] = useState(null);
   return (
     <UserProvider>
       <div className="py-5 flex justify-center items-center h-screen w-screen bg-gradient-to-b from-gradient-top to-gradient-bot">
@@ -26,13 +27,19 @@ export default function Homepage() {
           <div className="col-span-12 row-span-9 rounded-xl md:row-span-9 md:col-span-12 md:row-start-2 md:col-start-1 lg:col-start-5 lg:row-span-12 lg:row-start-1 bg-white">
             <>
               {clickedPage === "explore" && (
-                <ExploreUsersBox setClickedPage={setClickedPage} />
+                <ExploreUsersBox
+                  setCurrentChatUser={setCurrentChatUser}
+                  setClickedPage={setClickedPage}
+                />
               )}
               {clickedPage === "profile" && (
                 <Profile setClickedPage={setClickedPage} />
               )}
               {clickedPage === "messages" && (
-                <MessageBox setClickedPage={setClickedPage} />
+                <ChatWindow
+                  setClickedPage={setClickedPage}
+                  user={currentChatUser}
+                />
               )}
             </>
           </div>
