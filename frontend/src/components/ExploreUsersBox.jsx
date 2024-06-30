@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { UserContext } from "./UserContext";
 import UserAvatar from "./UserAvatar";
 import { ArrowRightIcon } from "@chakra-ui/icons";
+import { Skeleton, SkeletonCircle, SkeletonText, Box } from "@chakra-ui/react";
 
 export default function ExploreUsersBox({
   setClickedPage,
@@ -13,10 +14,20 @@ export default function ExploreUsersBox({
     setCurrentChatUser(user);
     setClickedPage("messages");
   };
+
   return (
     <>
       {loading ? (
-        <h2>🌀 Loading...</h2>
+        <Box padding="6" bg="white">
+          <SkeletonCircle size="50" />
+          <SkeletonText mt="4" noOfLines={2} height="40px" />
+          <SkeletonCircle size="50" />
+          <SkeletonText mt="4" noOfLines={2} height="40px" />
+          <SkeletonCircle size="50" />
+          <SkeletonText mt="4" noOfLines={2} height="40px" />
+          <SkeletonCircle size="50" />
+          <SkeletonText mt="4" noOfLines={2} height="40px" />
+        </Box>
       ) : (
         userData.other_users.map((user) => (
           <div
