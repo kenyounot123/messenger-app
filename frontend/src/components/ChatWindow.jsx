@@ -1,11 +1,13 @@
-import { Textarea } from "@chakra-ui/react";
+import { FormControl, Input, Textarea } from "@chakra-ui/react";
 import { PhoneIcon, BellIcon, SettingsIcon, LinkIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup } from "@chakra-ui/react";
+
 import UserAvatar from "./UserAvatar";
+import Message from "./Message";
 export default function ChatWindow({ user }) {
   return (
     <div className="p-5 h-full flex flex-col">
-      <div className="flex items-center mb-2 gap-5 border-b-2 pb-5">
+      <div className="flex items-center  gap-5 border-b-2 pb-5">
         <UserAvatar name={user.name} size={"md"} />
         {/* user.status and user.name */}
         <div className="grid grid-rows-2 grow">
@@ -19,18 +21,16 @@ export default function ChatWindow({ user }) {
         </div>
       </div>
       {/* Chat messages here */}
-      <div className="grow rounded-md min-h-5/6">fawefawef</div>
+      <div className="grow rounded-md min-h-5/6 bg-slate-100">
+        <Message />
+      </div>
       {/* Input Here */}
-      <div className="relative flex gap-2 items-center">
-        <Textarea
-          size={"sm"}
-          resize={"none"}
-          placeholder="Type your message here"
-        />
+      <FormControl className="relative flex gap-2 items-center">
+        <Input className="text-4xl" placeholder="Type your message here" />
         <Button className="" color="white" bg="#7A7AF3">
           Send
         </Button>
-      </div>
+      </FormControl>
     </div>
   );
 }
