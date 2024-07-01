@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
+
+  mount ActionCable.server => "/cable"
+  
   namespace :api do 
     namespace :v1 do 
       resources :users, only: [:index, :edit, :show, :update]
       resources :chat_rooms, only: [:index, :create]
+      resources :messages, only: [:edit, :create, :update, :destroy]
     end
   end
 
