@@ -8,6 +8,7 @@ import { Form } from "react-router-dom";
 export default function ExploreUsersBox({
   setClickedPage,
   setCurrentChatUser,
+  setChatRoom,
 }) {
   const { userData, setUserData, loading } = useContext(UserContext);
 
@@ -32,8 +33,9 @@ export default function ExploreUsersBox({
       },
       body: JSON.stringify(body),
     });
-    const responseData = await response.json();
-    console.log("Created chat room:", responseData);
+    const chatRoom = await response.json();
+    setChatRoom(chatRoom);
+    console.log("Created chat room:", chatRoom);
   };
   return (
     <>

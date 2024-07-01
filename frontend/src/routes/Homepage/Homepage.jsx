@@ -11,6 +11,7 @@ export default function Homepage() {
   // State to change the page displayed to user
   const [clickedPage, setClickedPage] = useState("explore");
   const [currentChatUser, setCurrentChatUser] = useState(null);
+  const [chatRoom, setChatRoom] = useState(null);
   return (
     <UserProvider>
       <div className="py-5 flex justify-center items-center h-screen w-screen bg-gradient-to-b from-gradient-top to-gradient-bot">
@@ -30,6 +31,7 @@ export default function Homepage() {
                 <ExploreUsersBox
                   setCurrentChatUser={setCurrentChatUser}
                   setClickedPage={setClickedPage}
+                  setChatRoom={setChatRoom}
                 />
               )}
               {clickedPage === "profile" && (
@@ -38,6 +40,7 @@ export default function Homepage() {
               {clickedPage === "messages" && (
                 <ChatWindow
                   setClickedPage={setClickedPage}
+                  chatRoom={chatRoom}
                   currentChatUser={currentChatUser}
                 />
               )}
