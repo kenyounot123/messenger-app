@@ -1,13 +1,14 @@
 import { FormControl, Input, Textarea } from "@chakra-ui/react";
 import { PhoneIcon, BellIcon, SettingsIcon, LinkIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { UserContext } from "./UserContext";
 import UserAvatar from "./UserAvatar";
 import Message from "./Message";
 export default function ChatWindow({ currentChatUser }) {
   const { userData } = useContext(UserContext);
+  useEffect(() => {}, []);
   return (
     <div className="p-5 h-full flex flex-col">
       <div className="flex items-center gap-5 border-b-2 pb-5">
@@ -24,7 +25,7 @@ export default function ChatWindow({ currentChatUser }) {
         </div>
       </div>
       {/* Chat messages here */}
-      <div className="grow rounded-md max-h-96 bg-slate-100 h-full p-2 text-wrap gap-y-2.5 overflow-y-auto flex flex-col justify-end">
+      <div className="grow rounded-md bg-slate-200 h-full p-2 text-wrap gap-y-2.5 overflow-y-auto flex flex-col justify-end">
         {/* if message.user === current_signed_in_user then render message on the right side */}
         <Message userSignedInMessage={false} message={"afwefawefwe"} />
         <Message userSignedInMessage={true} message={"afwefawefwe123123"} />
