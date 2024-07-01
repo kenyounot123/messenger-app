@@ -24,7 +24,7 @@ export default function Homepage() {
           <div className="hidden lg:block lg:col-start-2 lg:col-span-3 lg:row-span-11 rounded-xl bg-white">
             <Chat />
           </div>
-          <div className="col-span-12 row-span-9 rounded-xl md:row-span-9 md:col-span-12 md:row-start-2 md:col-start-1 lg:col-start-5 lg:row-span-12 lg:row-start-1 bg-white">
+          <div className="col-span-12 row-span-9 rounded-xl md:row-span-9 md:col-span-12 md:row-start-2 md:col-start-1 lg:col-start-5 lg:row-span-12 lg:row-start-1 bg-white min-h-[500px]">
             <>
               {clickedPage === "explore" && (
                 <ExploreUsersBox
@@ -38,7 +38,7 @@ export default function Homepage() {
               {clickedPage === "messages" && (
                 <ChatWindow
                   setClickedPage={setClickedPage}
-                  user={currentChatUser}
+                  currentChatUser={currentChatUser}
                 />
               )}
             </>
