@@ -12,28 +12,50 @@ export default function ChatWindow({ currentChatUser, chatRoom }) {
   const currentSignedInUser = userData.current_user;
   const accessToken = localStorage.getItem("token");
 
-  const ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
-  // Handle WebSocket connection open
-  ws.onopen = () => {
-    console.log("Connected to WebSocket");
+  useEffect(() => {
+    const ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
+    // Handle WebSocket connection open
+    ws.onopen = () => {
+      console.log("Connected to WebSocket");
 
-    // Subscribe to the chat room
-    const msg = {
-      command: "subscribe",
-      identifier: JSON.stringify({
-        channel: "ChatRoomChannel",
-        chat_room_id: chatRoom.id,
-      }),
+      // Subscribe to the chat room
+      const msg = {
+        command: "subscribe",
+        identifier: JSON.stringify({
+          channel: "ChatRoomChannel",
+          chat_room_id: chatRoom.id,
+        }),
+      };
+      console.log(msg);
+      ws.send(JSON.stringify(msg));
     };
-    console.log(msg);
-    ws.send(JSON.stringify(msg));
-  };
-  useEffect(() => {}, []);
+    return () => {
+      ws.close();
+    };
+  }, [chatRoom.id, accessToken]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Save message to database
-    setMessageInput("");
+    const body = {
+      content: messageInput,
+      chat_room_id: chatRoom.id,
+      sender_id: currentSignedInUser.id,
+    };
+    console.log(JSON.stringify(body));
+    const url = "http://localhost:3000/api/v1/messages";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (response.ok) {
+      console.log("Message saved successfully");
+      setMessageInput(""); // Clear the message input field on success
+    } else {
+      console.error("Failed to save message");
+      // Handle error cases here
+    }
   };
 
   const handleMessageInput = (e) => {
