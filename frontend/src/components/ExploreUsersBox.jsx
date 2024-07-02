@@ -1,9 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { UserContext } from "./UserContext";
 import UserAvatar from "./UserAvatar";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { Skeleton, SkeletonCircle, SkeletonText, Box } from "@chakra-ui/react";
-import { Form } from "react-router-dom";
 
 export default function ExploreUsersBox({
   setClickedPage,

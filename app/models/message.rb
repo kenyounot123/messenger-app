@@ -8,10 +8,7 @@ class Message < ApplicationRecord
 
   private 
 
-  def broadcast_message
-    ActionCable.server.broadcast("MessagesChannel", {
-                                  id:,
-                                  content:
-                                })
+  def broadcast_message_to_chat
+    ChatRoomChannel.broadcast_to(chat_room, { id: id, content: content })
   end
 end
