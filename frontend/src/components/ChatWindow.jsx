@@ -7,32 +7,47 @@ import { UserContext } from "./UserContext";
 import UserAvatar from "./UserAvatar";
 import Message from "./Message";
 export default function ChatWindow({ currentChatUser, chatRoom }) {
+  const [messageData, setMessageData] = useState(null);
   const [messageInput, setMessageInput] = useState("");
   const { userData } = useContext(UserContext);
   const currentSignedInUser = userData.current_user;
   const accessToken = localStorage.getItem("token");
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
-    // Handle WebSocket connection open
-    ws.onopen = () => {
-      console.log("Connected to WebSocket");
+    if (chatRoom) {
+      const ws = new WebSocket(
+        `ws://localhost:3000/cable?token=${accessToken}`
+      );
+      // Handle WebSocket connection open
+      ws.onopen = () => {
+        console.log("Connected to WebSocket");
 
-      // Subscribe to the chat room
-      const msg = {
-        command: "subscribe",
-        identifier: JSON.stringify({
-          channel: "ChatRoomChannel",
-          chat_room_id: chatRoom.id,
-        }),
+        // Subscribe to the chat room
+        const msg = {
+          command: "subscribe",
+          identifier: JSON.stringify({
+            channel: "ChatRoomChannel",
+            chat_room_id: chatRoom.id,
+          }),
+        };
+        console.log(msg);
+        ws.send(JSON.stringify(msg));
       };
-      console.log(msg);
-      ws.send(JSON.stringify(msg));
-    };
-    return () => {
-      ws.close();
-    };
-  }, [chatRoom.id, accessToken]);
+
+      fetchMessagesInChat(chatRoom);
+    }
+  }, [chatRoom]);
+
+  const fetchMessagesInChat = async (chatRoom) => {
+    const url = `http://localhost:3000/api/v1/messages?chat_room_id=${chatRoom.id}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error("Failed to save message");
+    }
+    const data = await response.json();
+    console.log(data);
+    setMessageData(data);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +57,7 @@ export default function ChatWindow({ currentChatUser, chatRoom }) {
       chat_room_id: chatRoom.id,
       sender_id: currentSignedInUser.id,
     };
-    console.log(JSON.stringify(body));
+
     const url = "http://localhost:3000/api/v1/messages";
     const response = await fetch(url, {
       method: "POST",
@@ -50,7 +65,6 @@ export default function ChatWindow({ currentChatUser, chatRoom }) {
       body: JSON.stringify(body),
     });
     if (response.ok) {
-      console.log("Message saved successfully");
       setMessageInput(""); // Clear the message input field on success
     } else {
       console.error("Failed to save message");
