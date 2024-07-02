@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.describe 'ChatRoomsController' do           
+RSpec.describe Api::V1::ChatRoomsController, type: :controller do
   context 'creating chat room' do 
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
