@@ -112,7 +112,7 @@ export default function ChatWindow({ currentChatUser, chatRoom }) {
         </div>
       </div>
       {/* Chat messages here */}
-      <div className="grow rounded-md bg-slate-200 h-full p-2 text-wrap gap-y-2.5 overflow-y-auto flex flex-col justify-end">
+      <div className="grow-0 rounded-md bg-slate-200 h-full p-2 gap-y-2.5 overflow-y-auto flex flex-col flex-row-reverse">
         {/* if message.user === current_signed_in_user then render message on the right side */}
         {messageData &&
           messageData.messages.map((message) => {
@@ -136,6 +136,7 @@ export default function ChatWindow({ currentChatUser, chatRoom }) {
         <Input
           id="messageContent"
           className="text-4xl"
+          value={messageInput}
           onChange={(e) => handleMessageInput(e)}
           placeholder="Type your message here"
         />
