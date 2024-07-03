@@ -9,7 +9,7 @@ export default function ExploreUsersBox({
   setCurrentChatUser,
   setChatRoom,
 }) {
-  const { userData, setUserData, loading } = useContext(UserContext);
+  const { userData, loading } = useContext(UserContext);
 
   const handleChatClick = (clickedUser) => {
     setCurrentChatUser(clickedUser);
@@ -25,16 +25,13 @@ export default function ExploreUsersBox({
         user_ids: [user.id, currentUser.id],
       },
     };
-    const response = await fetch(url, {
+    await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     });
-    const chatRoom = await response.json();
-    setChatRoom(chatRoom);
-    console.log("Created chat room:", chatRoom);
   };
   return (
     <>

@@ -4,8 +4,8 @@ import Sidebar from "../../components/Sidebar";
 import ChatWindow from "../../components/ChatWindow";
 import ExploreUsersBox from "../../components/ExploreUsersBox";
 
-import { useState, useEffect, useContext } from "react";
-import { UserContext, UserProvider } from "../../components/UserContext";
+import { useState } from "react";
+import { UserProvider } from "../../components/UserContext";
 
 export default function Homepage() {
   // State to change the page displayed to user
