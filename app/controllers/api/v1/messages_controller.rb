@@ -28,7 +28,8 @@ class Api::V1::MessagesController < ApplicationController
         sender_id: message.sender.id,
         content: message.content,
         created_at: format_created_at_date(message.created_at),
-        chat_room_id: message.chat_room.id
+        chat_room_id: message.chat_room.id,
+        id: message.id
       }
     end
   end
