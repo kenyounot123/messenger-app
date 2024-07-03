@@ -6,7 +6,9 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import UserAvatar from "./UserAvatar";
 import Message from "./Message";
-export default function ChatWindow({ currentChatUser, chatRoom }) {
+export default function ChatWindow({ currentChatUser }) {
+  const [chatRoom, setChatRoom] = useState(null);
+  const [chatLoading, setChatLoading] = useState(true);
   const [messageData, setMessageData] = useState(null);
   const [messageInput, setMessageInput] = useState("");
   const { userData } = useContext(UserContext);
@@ -14,49 +16,63 @@ export default function ChatWindow({ currentChatUser, chatRoom }) {
   const accessToken = localStorage.getItem("token");
 
   useEffect(() => {
-    if (chatRoom) {
-      const ws = new WebSocket(
-        `ws://localhost:3000/cable?token=${accessToken}`
-      );
-      // Handle WebSocket connection open
-      ws.onopen = () => {
-        console.log("Connected to WebSocket");
-
-        // Subscribe to the chat room
-        const msg = {
-          command: "subscribe",
-          identifier: JSON.stringify({
-            channel: "ChatRoomChannel",
-            chat_room_id: chatRoom.id,
-          }),
-        };
-        console.log(msg);
-        ws.send(JSON.stringify(msg));
-      };
-      ws.onmessage = (event) => {
-        const response = JSON.parse(event.data);
-        if (response.type === "ping") {
-          return;
-        }
-        if (response.message) {
-          const message = response.message;
-          setMessageData((prevData) => ({
-            ...prevData,
-            messages: [...prevData.messages, message],
-          }));
-        }
-      };
-      return () => {
-        ws.close();
-      };
-    }
-  }, [chatRoom, accessToken]);
-
+    fetchChatRoom();
+  }, []);
   useEffect(() => {
     if (chatRoom) {
+      setUpWebSocket;
       fetchMessagesInChat(chatRoom);
     }
   }, [chatRoom]);
+
+  const setUpWebSocket = (chatRoom) => {
+    const ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
+    // Handle WebSocket connection open
+    ws.onopen = () => {
+      console.log("Connected to WebSocket");
+
+      // Subscribe to the chat room
+      const msg = {
+        command: "subscribe",
+        identifier: JSON.stringify({
+          channel: "ChatRoomChannel",
+          chat_room_id: chatRoom.id,
+        }),
+      };
+      console.log(msg);
+      ws.send(JSON.stringify(msg));
+    };
+    ws.onmessage = (event) => {
+      const response = JSON.parse(event.data);
+      if (response.type === "ping") {
+        return;
+      }
+      if (response.message) {
+        const message = response.message;
+        setMessageData((prevData) => ({
+          ...prevData,
+          messages: [...prevData.messages, message],
+        }));
+      }
+    };
+    return () => {
+      ws.close();
+    };
+  };
+
+  const fetchChatRoom = async () => {
+    const usersInChat = [currentChatUser.id, currentSignedInUser.id];
+    const params = new URLSearchParams();
+    usersInChat.forEach((id) => params.append("user_ids[]", id));
+    const url = `http://localhost:3000/api/v1/chat_rooms?${params.toString()}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error("failed to get chat room");
+    }
+    const data = await response.json();
+    setChatRoom(data);
+    console.log(data);
+  };
 
   const fetchMessagesInChat = async (chatRoom) => {
     const url = `http://localhost:3000/api/v1/messages?chat_room_id=${chatRoom.id}`;
