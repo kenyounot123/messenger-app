@@ -33,7 +33,27 @@ export default function ChatWindow({ currentChatUser, chatRoom }) {
         console.log(msg);
         ws.send(JSON.stringify(msg));
       };
+      ws.onmessage = (event) => {
+        const response = JSON.parse(event.data);
+        if (response.type === "ping") {
+          return;
+        }
+        if (response.message) {
+          const message = response.message;
+          setMessageData((prevData) => ({
+            ...prevData,
+            messages: [...prevData.messages, message],
+          }));
+        }
+      };
+      return () => {
+        ws.close();
+      };
+    }
+  }, [chatRoom, accessToken]);
 
+  useEffect(() => {
+    if (chatRoom) {
       fetchMessagesInChat(chatRoom);
     }
   }, [chatRoom]);
@@ -94,10 +114,19 @@ export default function ChatWindow({ currentChatUser, chatRoom }) {
       {/* Chat messages here */}
       <div className="grow rounded-md bg-slate-200 h-full p-2 text-wrap gap-y-2.5 overflow-y-auto flex flex-col justify-end">
         {/* if message.user === current_signed_in_user then render message on the right side */}
-        <Message userSignedInMessage={false} message={"afwefawefwe"} />
-        <Message userSignedInMessage={true} message={"afwefawefwe123123"} />
-        <Message userSignedInMessage={true} message={"afwefawefwe123123"} />
-        <Message userSignedInMessage={false} message={"afwefawefwe123123"} />
+        {messageData &&
+          messageData.messages.map((message) => {
+            return (
+              <Message
+                key={message.id}
+                userSignedInMessage={
+                  message.sender_id === currentSignedInUser.id
+                }
+                message={message.content}
+                timeSent={message.created_at}
+              />
+            );
+          })}
       </div>
       {/* Input Here */}
       <form
