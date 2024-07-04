@@ -1,4 +1,5 @@
 import { SettingsIcon, ChatIcon, Search2Icon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 import UserAvatar from "./UserAvatar";
 export default function Sidebar({ setClickedPage, currentChatUser }) {
   function handleIconClick(e) {
@@ -8,8 +9,6 @@ export default function Sidebar({ setClickedPage, currentChatUser }) {
       setClickedPage("messages");
     } else if (icon === "searchIcon") {
       setClickedPage("explore");
-    } else if (icon === "settingIcon") {
-      setClickedPage("profile");
     } else {
       return;
     }
@@ -36,14 +35,12 @@ export default function Sidebar({ setClickedPage, currentChatUser }) {
         {" "}
         <Search2Icon color="white" boxSize={30} />{" "}
       </button>
-      <button
-        id="settingIcon"
-        className="text-center p-2"
-        onClick={(e) => handleIconClick(e)}
-      >
-        {" "}
-        <SettingsIcon color="white" boxSize={30} />{" "}
-      </button>
+      <Link to={"/profile"}>
+        <button id="settingIcon" className="text-center p-2">
+          {" "}
+          <SettingsIcon color="white" boxSize={30} />{" "}
+        </button>
+      </Link>
     </div>
   );
 }

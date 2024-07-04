@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { UserProvider } from "./components/UserContext.jsx";
 import Root from "./routes/Login/Root.jsx";
 import Homepage from "./routes/Homepage/Homepage.jsx";
+import Profile from "./routes/Profile/Profile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Homepage />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
