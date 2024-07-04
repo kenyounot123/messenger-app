@@ -9,10 +9,10 @@
 #   end
 
 # Create 5 users
-5.times do |i|
-  User.create!(
-    email: "user#{i+1}@example.com",
-    password: "password#{i+1}",
-    name: "User #{i+1}"
-  )
-end
+# 5.times do |i|
+#   User.create!(
+#     email: "user#{i+1}@example.com",
+#     password: "password#{i+1}",
+#     name: "User #{i+1}"
+#   )
+# end
