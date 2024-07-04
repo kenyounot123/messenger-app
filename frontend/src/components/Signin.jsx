@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "./UserContext";
 export default function SigninForm({ setFormAuth }) {
   const navigate = useNavigate();
+  const { setUserSignIn } = useContext(UserContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -31,6 +34,7 @@ export default function SigninForm({ setFormAuth }) {
       );
       localStorage.setItem("refresh_token", data.refresh_token);
       localStorage.setItem("token", data.token);
+      setUserSignIn((prev) => prev + 1);
       navigate("/home");
     } else {
       const errorResult = await response.json();

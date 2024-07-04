@@ -3,11 +3,7 @@ import SigninForm from "../../components/Signin";
 import SignupForm from "../../components/Signup";
 export default function Login() {
   const [formAuth, setFormAuth] = useState("login");
-  const toggleAuth = () => {
-    setFormAuth(
-      formAuth === "login" ? setFormAuth("signup") : setFormAuth("login")
-    );
-  };
+
   return (
     <div className="flex justify-center items-center h-screen w-screen bg-gradient-to-b from-gradient-top to-gradient-bot">
       <div className="flex flex-col gap-16">
