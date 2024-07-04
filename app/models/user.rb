@@ -6,5 +6,5 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true
   has_many :messages, foreign_key: "sender_id"
-  has_and_belongs_to_many :chatrooms, dependent: :destroy
+  has_and_belongs_to_many :chat_rooms, dependent: :destroy
 end
