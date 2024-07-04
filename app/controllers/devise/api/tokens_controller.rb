@@ -78,8 +78,7 @@ module Devise
 
       # rubocop:disable Metrics/AbcSize
       def revoke
-        Devise.api.config.before_revoke.call(current_devise_api_token, request)
-
+        Devise.api.config.before_revoke.call(params, current_devise_api_token, request)
         service = Devise::Api::TokensService::Revoke.new(devise_api_token: current_devise_api_token).call
 
         if service.success?
