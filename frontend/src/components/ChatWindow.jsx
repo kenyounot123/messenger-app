@@ -58,7 +58,7 @@ export default function ChatWindow({ currentChatUser }) {
         ws.close();
       }
     };
-  }, [chatRoom]);
+  }, [chatRoom, accessToken]);
 
   const renderedMessages = useMemo(() => {
     console.log("Messages rendered");
@@ -73,7 +73,7 @@ export default function ChatWindow({ currentChatUser }) {
         />
       ))
     );
-  }, [messageData]);
+  }, [messageData, currentSignedInUser.id]);
 
   const createChatRoom = async (user) => {
     const url = "http://localhost:3000/api/v1/chat_rooms";
