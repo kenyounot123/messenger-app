@@ -1,10 +1,10 @@
-import { SettingsIcon, ChatIcon, Icon, Search2Icon } from "@chakra-ui/icons";
+import { SettingsIcon, ChatIcon, Search2Icon } from "@chakra-ui/icons";
 import UserAvatar from "./UserAvatar";
-export default function Sidebar({ setClickedPage }) {
+export default function Sidebar({ setClickedPage, currentChatUser }) {
   function handleIconClick(e) {
     const button = e.target.closest("button");
     const icon = button ? button.id : null;
-    if (icon === "chatIcon") {
+    if (icon === "chatIcon" && currentChatUser !== null) {
       setClickedPage("messages");
     } else if (icon === "searchIcon") {
       setClickedPage("explore");

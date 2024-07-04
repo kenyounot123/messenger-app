@@ -18,7 +18,6 @@ const UserProvider = ({ children }) => {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           setUserData(data);
           setLoading(false);
         } else {
