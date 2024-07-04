@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 export default function Signout() {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("token");
+
+  const clearLocalStorage = () => {
+    localStorage.clear();
+  };
   const handleSignout = async () => {
     // this will send a POST request to an enpoint that will revoke the user's access token
     // then clear the authentication token stored in local storage
@@ -17,7 +21,8 @@ export default function Signout() {
     if (!response.ok) {
       throw Error(response.status);
     }
-    navigate("/root");
+    clearLocalStorage();
+    navigate("/");
   };
   return (
     <Button onClick={() => handleSignout()} size="md" colorScheme="red">

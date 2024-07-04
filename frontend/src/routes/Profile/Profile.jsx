@@ -9,7 +9,6 @@ import Signout from "../../components/Signout";
 
 export default function Profile() {
   const { userData, loading } = useContext(UserContext);
-  console.log(userData);
   const navigate = useNavigate();
   return (
     <div className="py-5 flex justify-center items-center h-screen w-screen bg-gradient-to-b from-gradient-top to-gradient-bot">
