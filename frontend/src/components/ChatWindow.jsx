@@ -1,7 +1,7 @@
 import { Input } from "@chakra-ui/react";
 import { PhoneIcon, BellIcon, SettingsIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import { Spinner } from "@chakra-ui/react";
 
 import { UserContext } from "./UserContext";
@@ -9,7 +9,7 @@ import UserAvatar from "./UserAvatar";
 import Message from "./Message";
 export default function ChatWindow({ currentChatUser }) {
   const [chatRoom, setChatRoom] = useState(null);
-  // const [chatLoading, setChatLoading] = useState(true);
+  const [chatLoading, setChatLoading] = useState(true);
   const [messageData, setMessageData] = useState(null);
   const [messageInput, setMessageInput] = useState("");
   const { userData } = useContext(UserContext);
@@ -18,48 +18,63 @@ export default function ChatWindow({ currentChatUser }) {
 
   useEffect(() => {
     createChatRoom(currentChatUser);
-  }, []);
+  }, [currentChatUser]);
 
   useEffect(() => {
     console.log("1");
+    let ws;
     if (chatRoom) {
-      setUpWebSocket(chatRoom);
-      fetchMessagesInChat(chatRoom);
+      ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
+      // Handle WebSocket connection open
+      ws.onopen = () => {
+        console.log("WebSocket connection opened");
+        // Subscribe to the chat room
+        const msg = {
+          command: "subscribe",
+          identifier: JSON.stringify({
+            channel: "ChatRoomChannel",
+            chat_room_id: chatRoom.id,
+          }),
+        };
+        ws.send(JSON.stringify(msg));
+      };
+      ws.onmessage = (event) => {
+        const response = JSON.parse(event.data);
+        if (response.type === "ping") {
+          return;
+        }
+        if (response.message) {
+          const message = response.message;
+
+          setMessageData((prevData) => ({
+            ...prevData,
+            messages: [...prevData.messages, message],
+          }));
+        }
+      };
     }
+    return () => {
+      if (ws) {
+        ws.close();
+      }
+    };
   }, [chatRoom]);
 
-  const setUpWebSocket = (chatRoom) => {
-    const ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
-    // Handle WebSocket connection open
-    ws.onopen = () => {
-      // Subscribe to the chat room
-      const msg = {
-        command: "subscribe",
-        identifier: JSON.stringify({
-          channel: "ChatRoomChannel",
-          chat_room_id: chatRoom.id,
-        }),
-      };
-      ws.send(JSON.stringify(msg));
-    };
-    ws.onmessage = (event) => {
-      const response = JSON.parse(event.data);
-      if (response.type === "ping") {
-        return;
-      }
-      if (response.message) {
-        const message = response.message;
+  const renderedMessages = useMemo(() => {
+    console.log("Messages rendered");
+    return (
+      messageData &&
+      messageData.messages.map((message) => (
+        <Message
+          key={message.id}
+          userSignedInMessage={message.sender_id === currentSignedInUser.id}
+          message={message.content}
+          timeSent={message.created_at}
+        />
+      ))
+    );
+  }, [messageData]);
 
-        setMessageData((prevData) => ({
-          ...prevData,
-          messages: [...prevData.messages, message],
-        }));
-      }
-    };
-    return () => {
-      ws.close();
-    };
-  };
   const createChatRoom = async (user) => {
     const url = "http://localhost:3000/api/v1/chat_rooms";
     const currentUser = userData.current_user;
@@ -76,8 +91,9 @@ export default function ChatWindow({ currentChatUser }) {
       body: JSON.stringify(body),
     });
     if (response.ok) {
-      const data = await response.json();
-      setChatRoom(data);
+      const chatRoomData = await response.json();
+      fetchMessagesInChat(chatRoomData);
+      setChatRoom(chatRoomData);
     }
   };
 
@@ -88,13 +104,16 @@ export default function ChatWindow({ currentChatUser }) {
       console.error("Failed to save message");
     }
     const data = await response.json();
-    // setChatLoading(false);
+    setChatLoading(false);
     setMessageData(data);
     console.log(data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (messageInput === "") {
+      return;
+    }
     // Save message to database
     const body = {
       content: messageInput,
@@ -137,7 +156,7 @@ export default function ChatWindow({ currentChatUser }) {
       </div>
       {/* Chat messages here */}
       <div className="relative grow-0 rounded-md bg-slate-200 h-full p-2 gap-y-2.5 overflow-y-auto flex flex-col flex-row-reverse">
-        {/* {chatLoading && (
+        {chatLoading && (
           <Spinner
             className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             thickness="4px"
@@ -146,21 +165,9 @@ export default function ChatWindow({ currentChatUser }) {
             color="#7A7AF3"
             size="xl"
           />
-        )} */}
+        )}
         {/* if message.user === current_signed_in_user then render message on the right side */}
-        {messageData &&
-          messageData.messages.map((message) => {
-            return (
-              <Message
-                key={message.id}
-                userSignedInMessage={
-                  message.sender_id === currentSignedInUser.id
-                }
-                message={message.content}
-                timeSent={message.created_at}
-              />
-            );
-          })}
+        {renderedMessages}
       </div>
       {/* Input Here */}
       <form
