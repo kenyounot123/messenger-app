@@ -1,7 +1,6 @@
 class Api::V1::ChatRoomsController < ApplicationController
   def index
     user_ids = params[:user_ids]
-    binding.break
     @chat_room = ChatRoom.joins(:users).where(users: { id: user_ids }).group("chat_rooms.id").having("COUNT(users.id) = ?", user_ids.count).first
     render json: @chat_room
   end

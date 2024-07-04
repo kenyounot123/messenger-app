@@ -1,14 +1,15 @@
-import { FormControl, Input, Textarea } from "@chakra-ui/react";
-import { PhoneIcon, BellIcon, SettingsIcon, LinkIcon } from "@chakra-ui/icons";
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
+import { PhoneIcon, BellIcon, SettingsIcon } from "@chakra-ui/icons";
+import { Button } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
+import { Spinner } from "@chakra-ui/react";
 
 import { UserContext } from "./UserContext";
 import UserAvatar from "./UserAvatar";
 import Message from "./Message";
 export default function ChatWindow({ currentChatUser }) {
   const [chatRoom, setChatRoom] = useState(null);
-  const [chatLoading, setChatLoading] = useState(true);
+  // const [chatLoading, setChatLoading] = useState(true);
   const [messageData, setMessageData] = useState(null);
   const [messageInput, setMessageInput] = useState("");
   const { userData } = useContext(UserContext);
@@ -16,11 +17,13 @@ export default function ChatWindow({ currentChatUser }) {
   const accessToken = localStorage.getItem("token");
 
   useEffect(() => {
-    fetchChatRoom();
+    createChatRoom(currentChatUser);
   }, []);
+
   useEffect(() => {
+    console.log("1");
     if (chatRoom) {
-      setUpWebSocket;
+      setUpWebSocket(chatRoom);
       fetchMessagesInChat(chatRoom);
     }
   }, [chatRoom]);
@@ -29,8 +32,6 @@ export default function ChatWindow({ currentChatUser }) {
     const ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
     // Handle WebSocket connection open
     ws.onopen = () => {
-      console.log("Connected to WebSocket");
-
       // Subscribe to the chat room
       const msg = {
         command: "subscribe",
@@ -39,7 +40,6 @@ export default function ChatWindow({ currentChatUser }) {
           chat_room_id: chatRoom.id,
         }),
       };
-      console.log(msg);
       ws.send(JSON.stringify(msg));
     };
     ws.onmessage = (event) => {
@@ -49,6 +49,7 @@ export default function ChatWindow({ currentChatUser }) {
       }
       if (response.message) {
         const message = response.message;
+
         setMessageData((prevData) => ({
           ...prevData,
           messages: [...prevData.messages, message],
@@ -59,19 +60,25 @@ export default function ChatWindow({ currentChatUser }) {
       ws.close();
     };
   };
-
-  const fetchChatRoom = async () => {
-    const usersInChat = [currentChatUser.id, currentSignedInUser.id];
-    const params = new URLSearchParams();
-    usersInChat.forEach((id) => params.append("user_ids[]", id));
-    const url = `http://localhost:3000/api/v1/chat_rooms?${params.toString()}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      console.error("failed to get chat room");
+  const createChatRoom = async (user) => {
+    const url = "http://localhost:3000/api/v1/chat_rooms";
+    const currentUser = userData.current_user;
+    const body = {
+      chat_room: {
+        user_ids: [user.id, currentUser.id],
+      },
+    };
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setChatRoom(data);
     }
-    const data = await response.json();
-    setChatRoom(data);
-    console.log(data);
   };
 
   const fetchMessagesInChat = async (chatRoom) => {
@@ -81,8 +88,9 @@ export default function ChatWindow({ currentChatUser }) {
       console.error("Failed to save message");
     }
     const data = await response.json();
-    console.log(data);
+    // setChatLoading(false);
     setMessageData(data);
+    console.log(data);
   };
 
   const handleSubmit = async (e) => {
@@ -128,7 +136,17 @@ export default function ChatWindow({ currentChatUser }) {
         </div>
       </div>
       {/* Chat messages here */}
-      <div className="grow-0 rounded-md bg-slate-200 h-full p-2 gap-y-2.5 overflow-y-auto flex flex-col flex-row-reverse">
+      <div className="relative grow-0 rounded-md bg-slate-200 h-full p-2 gap-y-2.5 overflow-y-auto flex flex-col flex-row-reverse">
+        {/* {chatLoading && (
+          <Spinner
+            className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.300"
+            color="#7A7AF3"
+            size="xl"
+          />
+        )} */}
         {/* if message.user === current_signed_in_user then render message on the right side */}
         {messageData &&
           messageData.messages.map((message) => {
