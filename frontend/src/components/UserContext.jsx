@@ -6,7 +6,6 @@ const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [userSignIn, setUserSignIn] = useState(0);
   useEffect(() => {
-    console.log("hi");
     async function fetchData() {
       const url = "http://localhost:3000/api/v1/users";
       const token = localStorage.getItem("token");
