@@ -9,16 +9,8 @@ export default function SignupForm({ setFormAuth }) {
     confirmPassword: "",
   });
 
-  // Storing authentication in local storage
   const handleAuthResponse = async (response) => {
     const data = await response.json();
-    //   localStorage.setItem("resource_owner", JSON.stringify(data.resource_owner));
-    //   localStorage.setItem("refresh_token", data.refresh_token);
-
-    //   setAccessToken(data.token);
-    //   setRefreshToken(data.refresh_token);
-    //   setResourceOwner(data.resource_owner);
-    // };
   };
   const onSubmit = async (e) => {
     e.preventDefault();

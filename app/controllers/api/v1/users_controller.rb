@@ -12,6 +12,12 @@ class Api::V1::UsersController < ApplicationController
     }
   end
 
+  def update
+    user = User.find(params[:id])
+    user.update(user_params)
+  end
+
+
   def all_other_users(current_user)
     User.where.not(id: current_user.id).map do |user|
       {
@@ -33,5 +39,11 @@ class Api::V1::UsersController < ApplicationController
   def show
     devise_api_token = current_devise_api_token
     render json: devise_api_token.resource_owner.orders.find(params[:id]), status: :ok
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:name, :id, :email, :password)
   end
 end

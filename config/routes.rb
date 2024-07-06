@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   
   namespace :api do 
     namespace :v1 do 
-      resources :users, only: [:index, :edit, :show, :update]
+      resources :users, only: [:index, :show, :update]
       resources :chat_rooms, only: [:create]
       resources :messages, only: [:index, :edit, :create, :update, :destroy]
     end

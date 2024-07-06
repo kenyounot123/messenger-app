@@ -54,7 +54,7 @@ export default function Profile() {
   const updateData = async (newInfo) => {
     const body = { name: newInfo.name };
     const url = `http://localhost:3000/api/v1/users/${userData.current_user.id}`;
-    const response = await fetch(url, {
+    await fetch(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-type": "application/json",
@@ -62,8 +62,6 @@ export default function Profile() {
       method: "PATCH",
       body: JSON.stringify(body),
     });
-    const data = await response.json();
-    console.log(data);
   };
   const handleEditNameClick = () => {
     setEditNameClick(true);
