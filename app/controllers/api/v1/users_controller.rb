@@ -5,7 +5,7 @@ class Api::V1::UsersController < ApplicationController
   def index
     current_user = current_devise_api_token.resource_owner
     other_users = all_other_users(current_user)
-    # Render JSON including current user and all other users
+
     render json: {
       current_user: current_user,
       other_users: other_users
