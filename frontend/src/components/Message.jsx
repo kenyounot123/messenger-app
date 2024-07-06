@@ -1,11 +1,25 @@
-export default function Message({ message, timeSent, userSignedInMessage }) {
+import { useContext } from "react";
+import { UserContext } from "./UserContext";
+export default function Message({
+  senderId,
+  message,
+  timeSent,
+  userSignedInMessage,
+}) {
+  const { userData } = useContext(UserContext);
+  const getMessageSenderName = (sender_id) => {
+    console.log(senderId);
+    const sender = userData.other_users.find((user) => user.id === sender_id);
+    console.log(sender);
+    return sender.name;
+  };
   return (
     <div className={`${userSignedInMessage ? "self-end" : "self-start"}`}>
       {!userSignedInMessage ? (
         <>
           <div className="flex justify-between">
             {/* user.name */}
-            {<p>Username</p>}
+            {<p>{getMessageSenderName(senderId)}</p>}
             {/* Message.created */}
             <p>{timeSent}</p>
           </div>

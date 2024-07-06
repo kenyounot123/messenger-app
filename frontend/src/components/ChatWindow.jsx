@@ -21,7 +21,6 @@ export default function ChatWindow({ currentChatUser }) {
   }, [currentChatUser]);
 
   useEffect(() => {
-    console.log("1");
     let ws;
     if (chatRoom) {
       ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
@@ -61,12 +60,12 @@ export default function ChatWindow({ currentChatUser }) {
   }, [chatRoom, accessToken]);
 
   const renderedMessages = useMemo(() => {
-    console.log("Messages rendered");
     return (
       messageData &&
       messageData.messages.map((message) => (
         <Message
           key={message.id}
+          senderId={message.sender_id}
           userSignedInMessage={message.sender_id === currentSignedInUser.id}
           message={message.content}
           timeSent={message.created_at}
