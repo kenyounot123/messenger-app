@@ -1,4 +1,4 @@
-import Chat from "../../components/Chat";
+import SideChat from "../../components/SideChat";
 import SearchBar from "../../components/SearchBar";
 import Sidebar from "../../components/Sidebar";
 import ChatWindow from "../../components/ChatWindow";
@@ -26,7 +26,12 @@ export default function Homepage() {
           <SearchBar />
         </div>
         <div className="hidden lg:block lg:col-start-2 lg:col-span-3 lg:row-span-11 rounded-xl bg-white">
-          <Chat />
+          <SideChat
+            userData={userData}
+            loading={loading}
+            setCurrentChatUser={setCurrentChatUser}
+            setClickedPage={setClickedPage}
+          />
         </div>
         <div className="col-span-12 row-span-9 rounded-xl md:row-span-9 md:col-span-12 md:row-start-2 md:col-start-1 lg:col-start-5 lg:row-span-12 lg:row-start-1 bg-white min-h-[500px] overflow-y-auto">
           <>

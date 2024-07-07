@@ -29,16 +29,9 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-
-
   def format_created_at_date(iso_date)
     date = iso_date.to_datetime
     date.strftime('%B %d %Y')
-  end
-
-  def show
-    devise_api_token = current_devise_api_token
-    render json: devise_api_token.resource_owner.orders.find(params[:id]), status: :ok
   end
 
   private

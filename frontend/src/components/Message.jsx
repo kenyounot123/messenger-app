@@ -8,9 +8,7 @@ export default function Message({
 }) {
   const { userData } = useContext(UserContext);
   const getMessageSenderName = (sender_id) => {
-    console.log(senderId);
     const sender = userData.other_users.find((user) => user.id === sender_id);
-    console.log(sender);
     return sender.name;
   };
   return (

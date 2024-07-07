@@ -26,7 +26,6 @@ export default function ChatWindow({ currentChatUser }) {
       ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
       // Handle WebSocket connection open
       ws.onopen = () => {
-        console.log("WebSocket connection opened");
         // Subscribe to the chat room
         const msg = {
           command: "subscribe",
@@ -105,7 +104,6 @@ export default function ChatWindow({ currentChatUser }) {
     const data = await response.json();
     setChatLoading(false);
     setMessageData(data);
-    console.log(data);
   };
 
   const handleSubmit = async (e) => {
