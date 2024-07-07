@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-export default function Signout() {
+export default function Signout({ setUserData }) {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("token");
 
@@ -21,8 +21,9 @@ export default function Signout() {
     if (!response.ok) {
       throw Error(response.status);
     }
+    setUserData(null);
     clearLocalStorage();
-    navigate("/");
+    navigate("/", { state: { status: "Successfully signed out" } });
   };
   return (
     <Button onClick={() => handleSignout()} size="md" colorScheme="red">

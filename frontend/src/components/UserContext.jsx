@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import FlashMessage from "./FlashMessage";
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
@@ -23,11 +24,7 @@ const UserProvider = ({ children }) => {
         setUserData(data);
       } else if (response.status === 401) {
         // This correct behavior
-        setErrorMessage("Your session has expired. Please sign in again.");
-      } else {
-        setErrorMessage(
-          "There is no user saved in local storage and No User is not signed in"
-        );
+        // setErrorMessage("Your session has expired. Please sign in again.");
       }
     } catch (error) {
       console.log("Error fetching user data: ", error);
@@ -40,25 +37,20 @@ const UserProvider = ({ children }) => {
     fetchData();
   }, [userSignIn]);
 
-  useEffect(() => {
-    if (errorMessage) {
-      const timer = setTimeout(() => {
-        setErrorMessage("");
-      }, 5000); // Clear error message after 5 seconds
-      return () => clearTimeout(timer);
-    }
-  }, [errorMessage]);
-
   return (
     <UserContext.Provider
-      value={{ userData, setUserData, loading, setUserSignIn }}
+      value={{
+        userData,
+        setUserData,
+        loading,
+        setUserSignIn,
+      }}
     >
       {errorMessage && (
-        <div className="w-full">
-          <div className="rounded-xl left-1/2 -translate-x-1/2 bg-white p-5 text-red-700 border-red-400 absolute mt-5 max-w-sm mx-auto">
-            {errorMessage}
-          </div>
-        </div>
+        <FlashMessage
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+        />
       )}
       {children}
     </UserContext.Provider>
