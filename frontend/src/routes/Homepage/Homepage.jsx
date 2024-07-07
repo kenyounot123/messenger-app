@@ -3,6 +3,8 @@ import SearchBar from "../../components/SearchBar";
 import Sidebar from "../../components/Sidebar";
 import ChatWindow from "../../components/ChatWindow";
 import ExploreUsersBox from "../../components/ExploreUsersBox";
+import { useContext } from "react";
+import { UserContext } from "../../components/UserContext";
 
 import { useState } from "react";
 
@@ -10,6 +12,7 @@ export default function Homepage() {
   // State to change the page displayed to user
   const [clickedPage, setClickedPage] = useState("explore");
   const [currentChatUser, setCurrentChatUser] = useState(null);
+  const { userData, loading } = useContext(UserContext);
   return (
     <div className="py-5 flex justify-center items-center h-screen w-screen bg-gradient-to-b from-gradient-top to-gradient-bot">
       <div className="p-5 gap-x-5 gap-y-3 grid grid-cols-12 grid-rows-12 w-11/12 bg-gradient-to-b from-gradient-box-top to-gradient-box-bot self-center min-h-96 max-h-full bg-black rounded-xl">
@@ -29,6 +32,8 @@ export default function Homepage() {
           <>
             {clickedPage === "explore" && (
               <ExploreUsersBox
+                userData={userData}
+                loading={loading}
                 setCurrentChatUser={setCurrentChatUser}
                 setClickedPage={setClickedPage}
               />

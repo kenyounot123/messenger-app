@@ -11,10 +11,6 @@ const UserProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     const url = "http://localhost:3000/api/v1/users";
 
-    if (token) {
-      await refreshToken(token);
-    }
-
     try {
       const response = await fetch(url, {
         headers: {
@@ -37,35 +33,21 @@ const UserProvider = ({ children }) => {
       console.log("Error fetching user data: ", error);
     } finally {
       setLoading(false);
-      setErrorMessage(false);
     }
   }
-  const refreshToken = async (token) => {
-    const url = "http://localhost:3000/users/tokens/refresh";
-
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("token", data.access_token); // Update the access token
-      } else {
-        console.error("Failed to refresh token");
-      }
-    } catch (error) {
-      console.log("Error refreshing token:", error);
-    }
-  };
 
   useEffect(() => {
     fetchData();
   }, [userSignIn]);
+
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000); // Clear error message after 5 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
 
   return (
     <UserContext.Provider

@@ -7,17 +7,16 @@ export default function Login() {
   const navigate = useNavigate();
   const { userData } = useContext(UserContext);
   const [formAuth, setFormAuth] = useState("login");
-  const userLoggedIn = localStorage.getItem("resource_owner");
 
   useEffect(() => {
-    if (userLoggedIn) {
+    if (userData) {
       navigate("/home");
     }
-  }, [navigate]);
+  }, [navigate, userData]);
 
   return (
     <>
-      {!userLoggedIn && (
+      {!userData && (
         <div className="flex justify-center items-center h-screen w-screen bg-gradient-to-b from-gradient-top to-gradient-bot">
           <div className="flex flex-col gap-16">
             <h1 className="text-center text-white text-5xl">
