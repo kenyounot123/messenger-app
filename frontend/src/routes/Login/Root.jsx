@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import SigninForm from "../../components/Signin";
 import SignupForm from "../../components/Signup";
+import { UserContext } from "../../components/UserContext";
 import { useNavigate } from "react-router-dom";
 export default function Login() {
   const navigate = useNavigate();
+  const { userData } = useContext(UserContext);
   const [formAuth, setFormAuth] = useState("login");
-  const userLoggedIn = localStorage.getItem("resource_owner") ? true : false;
+  const userLoggedIn = localStorage.getItem("resource_owner");
 
   useEffect(() => {
-    if (localStorage.getItem("resource_owner")) {
+    if (userLoggedIn) {
       navigate("/home");
     }
   }, [navigate]);
