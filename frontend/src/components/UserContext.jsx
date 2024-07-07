@@ -5,6 +5,7 @@ const UserContext = createContext();
 const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userSignIn, setUserSignIn] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -22,6 +23,7 @@ const UserProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         setUserData(data);
+        setIsLoggedIn(true);
       } else if (response.status === 401) {
         // This correct behavior
         // setErrorMessage("Your session has expired. Please sign in again.");
@@ -44,6 +46,7 @@ const UserProvider = ({ children }) => {
         setUserData,
         loading,
         setUserSignIn,
+        isLoggedIn,
       }}
     >
       {errorMessage && (

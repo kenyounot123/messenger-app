@@ -107,12 +107,12 @@ export default function Profile() {
                       </div>
                     ) : (
                       <p className="font-bold text-center text-5xl">
-                        {userData.current_user.name}
+                        {userData && userData.current_user.name}
                       </p>
                     )}
                   </>
                 </div>
-                <p>{userData.current_user.email}</p>
+                <p>{userData && userData.current_user.email}</p>
                 <div className="flex gap-5">
                   {editNameClick ? (
                     <Button

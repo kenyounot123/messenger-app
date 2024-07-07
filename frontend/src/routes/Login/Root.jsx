@@ -17,20 +17,21 @@ export default function Login() {
       window.history.replaceState({}, "");
       console.log(location.state);
     }
-    if (userData) {
-      navigate("/home");
-    }
-  }, [navigate]);
+  }, [location.state]);
 
   return (
     <>
-      {!userData && (
+      {userData ? (
+        navigate("/home")
+      ) : (
         <>
           {flashMsg && (
             <FlashMessage
               errorMessage={flashMsg}
               setErrorMessage={setFlashMsg}
-              textColor="green"
+              textColor="text-green-400"
+              borderColor="border-green-200"
+              bgColor="bg-white"
             />
           )}
           <div className="flex justify-center items-center h-screen w-screen bg-gradient-to-b from-gradient-top to-gradient-bot">
