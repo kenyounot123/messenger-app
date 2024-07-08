@@ -1,5 +1,6 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
 import FlashMessage from "./FlashMessage";
+
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
@@ -8,6 +9,7 @@ const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userSignIn, setUserSignIn] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
+  const firstUpdate = useRef(true);
 
   async function fetchData() {
     const token = localStorage.getItem("token");
@@ -22,6 +24,7 @@ const UserProvider = ({ children }) => {
       });
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         setUserData(data);
         setIsLoggedIn(true);
       } else if (response.status === 401) {
@@ -36,6 +39,10 @@ const UserProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false; // Set to false after first render
+      return;
+    }
     fetchData();
   }, [userSignIn]);
 

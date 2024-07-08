@@ -20,6 +20,7 @@ export default function Homepage() {
           <Sidebar
             setClickedPage={setClickedPage}
             currentChatUser={currentChatUser}
+            userData={userData}
           />
         </div>
         <div className="col-span-12 md:col-span-12 lg:block lg:col-start-2 lg:col-span-3 rounded-xl">

@@ -14,6 +14,30 @@ export default function SigninForm({ setFormAuth }) {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
+  const handleGuestSignIn = async (e) => {
+    e.preventDefault();
+    const url = "http://localhost:3000/users/tokens/sign_in";
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ guest: true }), // Indicating a guest sign-in
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.token); // Save the token in local storage
+        setUserSignIn((prev) => prev + 1); // Trigger a re-fetch in the UserProvider
+      } else {
+        console.error("Failed to sign in as a guest.");
+      }
+    } catch (error) {
+      console.error("Error during guest sign-in:", error);
+    }
+  };
   const handleSignIn = async (e) => {
     e.preventDefault();
     const url = "http://localhost:3000/users/tokens/sign_in";
@@ -70,7 +94,10 @@ export default function SigninForm({ setFormAuth }) {
           {" "}
           Log In{" "}
         </button>
-        <button className="text-white py-1 bg-accent-color rounded-md mt-1">
+        <button
+          onClick={(e) => handleGuestSignIn(e)}
+          className="text-white py-1 bg-accent-color rounded-md mt-1"
+        >
           {" "}
           Log in as Guest{" "}
         </button>

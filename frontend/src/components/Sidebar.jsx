@@ -1,7 +1,7 @@
 import { SettingsIcon, ChatIcon, Search2Icon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import UserAvatar from "./UserAvatar";
-export default function Sidebar({ setClickedPage, currentChatUser }) {
+export default function Sidebar({ setClickedPage, currentChatUser, userData }) {
   function handleIconClick(e) {
     const button = e.target.closest("button");
     const icon = button ? button.id : null;
@@ -17,7 +17,7 @@ export default function Sidebar({ setClickedPage, currentChatUser }) {
     <div className="flex items-center lg:flex-col gap-10">
       <button className="text-center p-2">
         {" "}
-        <UserAvatar size="md" />
+        <UserAvatar name={userData.current_user.name} size="md" />
       </button>
       <button
         id="chatIcon"

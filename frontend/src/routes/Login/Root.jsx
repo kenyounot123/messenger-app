@@ -3,9 +3,8 @@ import SigninForm from "../../components/Signin";
 import SignupForm from "../../components/Signup";
 import FlashMessage from "../../components/FlashMessage";
 import { UserContext } from "../../components/UserContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 export default function Login() {
-  const navigate = useNavigate();
   const { userData } = useContext(UserContext);
   let location = useLocation();
   const [formAuth, setFormAuth] = useState("login");
@@ -15,14 +14,13 @@ export default function Login() {
     if (location.state) {
       setFlashMsg(location.state.status);
       window.history.replaceState({}, "");
-      console.log(location.state);
     }
   }, [location.state]);
 
   return (
     <>
       {userData ? (
-        navigate("/home")
+        <Navigate to="/home" />
       ) : (
         <>
           {flashMsg && (

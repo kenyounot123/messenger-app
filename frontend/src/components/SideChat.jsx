@@ -1,5 +1,6 @@
 import UserAvatar from "./UserAvatar";
 import ListUsers from "./ListUsers";
+import { useEffect } from "react";
 function PersonalChat({ user, onClick }) {
   return (
     <div
@@ -26,6 +27,10 @@ export default function SideChat({
   setClickedPage,
   setCurrentChatUser,
 }) {
+  useEffect(() => {});
+
+  const getLatestMessageInChat = (chatRoom) => {};
+
   const handleChatClick = (clickedUser) => {
     setCurrentChatUser(clickedUser);
     setClickedPage("messages");
