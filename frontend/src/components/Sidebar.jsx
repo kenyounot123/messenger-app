@@ -17,7 +17,7 @@ export default function Sidebar({ setClickedPage, currentChatUser, userData }) {
     <div className="flex items-center lg:flex-col gap-10">
       <button className="text-center p-2">
         {" "}
-        <UserAvatar name={userData.current_user.name} size="md" />
+        <UserAvatar name={userData && userData.current_user.name} size="md" />
       </button>
       <button
         id="chatIcon"

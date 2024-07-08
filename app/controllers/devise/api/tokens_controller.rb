@@ -44,34 +44,15 @@ module Devise
       # rubocop:disable Metrics/AbcSize
       def sign_in
         if params[:guest].present?
-          # Generate random guest email, password, and name
-          guest_email = "guest_#{SecureRandom.hex(10)}@example.com"
-          guest_password = SecureRandom.hex(10)
-          guest_name = "Guest User"
-          
-          # Check if the guest user already exists
-          guest_user = User.find_by(email: guest_email)
-      
-          unless guest_user
-            # Create a new guest user
-            guest_user = User.create!(
-              email: guest_email,
-              password: guest_password,
-              password_confirmation: guest_password,
-              name: guest_name,
-              guest: true
-            )
-          end
-      
-          # Override sign_in_params with guest user's credentials
-          sign_in_params = { email: guest_user.email, password: guest_password }
+          # Use guest sign-in parameters
+          current_sign_in_params = guest_sign_in_params
+        else
+          # Use regular sign-in parameters
+          current_sign_in_params = sign_in_params
         end
-
-        Devise.api.config.before_sign_in.call(sign_in_params, request, resource_class)
-
-        service = Devise::Api::ResourceOwnerService::SignIn.new(params: sign_in_params,
+        Devise.api.config.before_sign_in.call(current_sign_in_params, request, resource_class)
+        service = Devise::Api::ResourceOwnerService::SignIn.new(params: current_sign_in_params,
                                                                 resource_class: resource_class).call
-
         if service.success?
           token = service.success
 
@@ -86,10 +67,11 @@ module Devise
         end
 
         error_response = Devise::Api::Responses::ErrorResponse.new(request,
-                                                                   resource_class: resource_class,
-                                                                   **service.failure)
+                                                                  resource_class: resource_class,
+                                                                  **service.failure)
 
         render json: error_response.body, status: error_response.status
+    
       end
       # rubocop:enable Metrics/AbcSize
 
@@ -174,8 +156,32 @@ module Devise
                       *::Devise::ParameterSanitizer::DEFAULT_PERMITTED_ATTRIBUTES[:sign_up]).to_h
       end
 
+      def guest_sign_in_params
+        # Generate random guest email, password, and name
+        guest_email = "guest_#{SecureRandom.hex(10)}@example.com"
+        guest_password = SecureRandom.hex(10)
+        guest_name = "Guest User"
+      
+        # Check if the guest user already exists
+        guest_user = User.find_by(email: guest_email)
+      
+        unless guest_user
+          # Create a new guest user
+          guest_user = User.create!(
+            email: guest_email,
+            password: guest_password,
+            password_confirmation: guest_password,
+            name: guest_name,
+            guest: true
+          )
+        end
+      
+        # Return guest user's credentials as parameters
+        { email: guest_user.email, password: guest_password }
+      end
+
       def sign_in_params
-        params.permit(:guest, :user, *resource_class.authentication_keys,
+        params.permit(:guest, *resource_class.authentication_keys,
                       *::Devise::ParameterSanitizer::DEFAULT_PERMITTED_ATTRIBUTES[:sign_in]).to_h
       end
 
