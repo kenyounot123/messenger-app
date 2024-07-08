@@ -43,6 +43,30 @@ module Devise
 
       # rubocop:disable Metrics/AbcSize
       def sign_in
+        if params[:guest].present?
+          # Generate random guest email, password, and name
+          guest_email = "guest_#{SecureRandom.hex(10)}@example.com"
+          guest_password = SecureRandom.hex(10)
+          guest_name = "Guest User"
+          
+          # Check if the guest user already exists
+          guest_user = User.find_by(email: guest_email)
+      
+          unless guest_user
+            # Create a new guest user
+            guest_user = User.create!(
+              email: guest_email,
+              password: guest_password,
+              password_confirmation: guest_password,
+              name: guest_name,
+              guest: true
+            )
+          end
+      
+          # Override sign_in_params with guest user's credentials
+          sign_in_params = { email: guest_user.email, password: guest_password }
+        end
+
         Devise.api.config.before_sign_in.call(sign_in_params, request, resource_class)
 
         service = Devise::Api::ResourceOwnerService::SignIn.new(params: sign_in_params,
@@ -146,12 +170,12 @@ module Devise
       private
 
       def sign_up_params
-        params.permit(:name, :email, :password, *resource_class.authentication_keys,
+        params.permit(:guest, :name, :email, :password, *resource_class.authentication_keys,
                       *::Devise::ParameterSanitizer::DEFAULT_PERMITTED_ATTRIBUTES[:sign_up]).to_h
       end
 
       def sign_in_params
-        params.permit(*resource_class.authentication_keys,
+        params.permit(:guest, :user, *resource_class.authentication_keys,
                       *::Devise::ParameterSanitizer::DEFAULT_PERMITTED_ATTRIBUTES[:sign_in]).to_h
       end
 

@@ -28,7 +28,7 @@ function LoadingScreen() {
     </>
   );
 }
-function ChangeAvatarSection({ hidden, setHidden }) {
+function ChangeAvatarSection({ hidden, setHidden, name }) {
   return (
     <div
       onMouseEnter={() => setHidden(false)}
@@ -40,7 +40,7 @@ function ChangeAvatarSection({ hidden, setHidden }) {
           Change Profile{" "}
         </h1>
       )}
-      <UserAvatar size={"xl"} />
+      <UserAvatar name={name} size={"xl"} />
     </div>
   );
 }
@@ -93,7 +93,11 @@ export default function Profile() {
                 <ArrowBackIcon boxSize={20} />
               </Link>
               <div className="flex flex-col justify-center items-center gap-5">
-                <ChangeAvatarSection hidden={hidden} setHidden={setHidden} />
+                <ChangeAvatarSection
+                  hidden={hidden}
+                  setHidden={setHidden}
+                  name={userData.current_user.name}
+                />
                 <div className="relative">
                   <>
                     {editNameClick ? (

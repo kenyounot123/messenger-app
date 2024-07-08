@@ -14,6 +14,7 @@ export default function SigninForm({ setFormAuth }) {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
+
   const handleGuestSignIn = async (e) => {
     e.preventDefault();
     const url = "http://localhost:3000/users/tokens/sign_in";
@@ -38,6 +39,7 @@ export default function SigninForm({ setFormAuth }) {
       console.error("Error during guest sign-in:", error);
     }
   };
+
   const handleSignIn = async (e) => {
     e.preventDefault();
     const url = "http://localhost:3000/users/tokens/sign_in";
