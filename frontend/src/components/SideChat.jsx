@@ -14,9 +14,7 @@ function PersonalChat({ user, onClick }) {
         {/* user.message.lastSent */}
         <p className="text-nowrap text-end col-start-6">10:14am</p>
         {/* user's chatroom latest message */}
-        <p className="text-nowrap col-start-1 col-span-3">
-          This is the latest message
-        </p>
+        <p className="text-nowrap col-start-1 col-span-3">New message !</p>
       </div>
     </div>
   );

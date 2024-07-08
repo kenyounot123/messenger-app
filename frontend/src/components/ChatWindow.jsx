@@ -176,7 +176,12 @@ export default function ChatWindow({ currentChatUser }) {
           className="text-4xl"
           value={messageInput}
           onChange={(e) => handleMessageInput(e)}
-          placeholder="Type your message here"
+          placeholder={
+            userData.current_user.guest
+              ? "Sign Up to message other Users"
+              : "Type your message here"
+          }
+          disabled={userData.current_user.guest}
         />
         <Button type="submit" color="white" bg="#7A7AF3">
           Send

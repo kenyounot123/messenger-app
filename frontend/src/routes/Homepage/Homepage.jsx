@@ -26,7 +26,7 @@ export default function Homepage() {
         <div className="col-span-12 md:col-span-12 lg:block lg:col-start-2 lg:col-span-3 rounded-xl">
           <SearchBar />
         </div>
-        <div className="hidden lg:block lg:col-start-2 lg:col-span-3 lg:row-span-11 rounded-xl bg-white">
+        <div className="hidden lg:block lg:col-start-2 lg:col-span-3 lg:row-span-11 rounded-xl bg-white overflow-y-auto">
           <SideChat
             userData={userData}
             loading={loading}
