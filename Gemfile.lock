@@ -306,7 +306,7 @@ DEPENDENCIES
   faker
   omniauth-github (~> 2.0.0)
   omniauth-google-oauth2
-  pg
+  pg (~> 1.1)
   puma (>= 5.0)
   rack-cors
   rails (~> 7.1.3, >= 7.1.3.4)

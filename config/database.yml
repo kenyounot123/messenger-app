@@ -82,3 +82,4 @@ production:
   database: messenger_production
   username: messenger
   password: <%= ENV["MESSENGER_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
