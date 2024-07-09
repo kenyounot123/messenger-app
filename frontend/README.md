@@ -6,5 +6,6 @@ This project is a simple web-based messaging app that allows users to send messa
 
 - React for frontend
 - Ruby on Rails for backend
+- Active cable for Real-time messaing and Websocket integration
 - Devise-api gem for user authentication
-- Deployed using Vercel
+- Deployed using Vercel and Render
