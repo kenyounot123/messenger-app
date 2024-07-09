@@ -37,7 +37,7 @@ Rails.application.configure do
   config.action_cable.url = "wss://messenger-app-0vcf.onrender.com/cable"
   config.action_cable.allowed_request_origins = [
     'https://messenger-app-0vcf.onrender.com',
-     /https:\/\/messenger-app-1-gtfa.onrender.*/
+    /https:\/\/messenger-app-0vcf.onrender.*/
   ]
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
