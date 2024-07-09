@@ -15,7 +15,7 @@ const UserProvider = ({ children }) => {
   async function fetchData() {
     console.log(endpoints.users);
     const token = localStorage.getItem("token");
-    const url = authEndPoints.users;
+    const url = endpoints.users;
 
     try {
       const response = await fetch(url, {
