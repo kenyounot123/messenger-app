@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useRef } from "react";
 import FlashMessage from "./FlashMessage";
+import { authEndPoints, endpoints } from "../helpers/apiEndpoints";
 
 const UserContext = createContext();
 
@@ -12,8 +13,9 @@ const UserProvider = ({ children }) => {
   const firstUpdate = useRef(true);
 
   async function fetchData() {
+    console.log(endpoints.users);
     const token = localStorage.getItem("token");
-    const url = "http://localhost:3000/api/v1/users";
+    const url = authEndPoints.users;
 
     try {
       const response = await fetch(url, {

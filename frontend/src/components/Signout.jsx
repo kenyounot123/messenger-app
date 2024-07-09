@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { authEndPoints } from "../helpers/apiEndpoints";
 export default function Signout({ setUserData }) {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("token");
@@ -10,7 +11,7 @@ export default function Signout({ setUserData }) {
   const handleSignout = async () => {
     // this will send a POST request to an enpoint that will revoke the user's access token
     // then clear the authentication token stored in local storage
-    const url = "http://localhost:3000/users/tokens/revoke";
+    const url = authEndPoints.revoke;
     const response = await fetch(url, {
       method: "POST",
       headers: {

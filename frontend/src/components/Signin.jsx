@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "./UserContext";
+import { authEndPoints } from "../helpers/apiEndpoints";
 export default function SigninForm({ setFormAuth }) {
   const navigate = useNavigate();
   const { setUserSignIn } = useContext(UserContext);
@@ -17,7 +18,7 @@ export default function SigninForm({ setFormAuth }) {
 
   const handleGuestSignIn = async (e) => {
     e.preventDefault();
-    const url = "http://localhost:3000/users/tokens/sign_in";
+    const url = authEndPoints.signIn;
 
     try {
       const response = await fetch(url, {
@@ -42,7 +43,7 @@ export default function SigninForm({ setFormAuth }) {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    const url = "http://localhost:3000/users/tokens/sign_in";
+    const url = authEndPoints.signIn;
 
     const { name, email, password } = formData;
     const body = { email, password };

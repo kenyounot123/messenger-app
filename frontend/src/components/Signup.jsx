@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { authEndPoints } from "../helpers/apiEndpoints";
 
 export default function SignupForm({ setFormAuth }) {
   const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ export default function SignupForm({ setFormAuth }) {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-    const url = "http://localhost:3000/users/tokens/sign_up";
+    const url = authEndPoints.signUp;
     const { name, email, password, confirmPassword } = formData;
 
     if (!name || !email || !password || !confirmPassword) {

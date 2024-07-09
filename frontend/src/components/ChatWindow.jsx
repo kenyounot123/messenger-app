@@ -7,6 +7,7 @@ import { Spinner } from "@chakra-ui/react";
 import { UserContext } from "./UserContext";
 import UserAvatar from "./UserAvatar";
 import Message from "./Message";
+import { endpoints, webSocketURL } from "../helpers/apiEndpoints";
 export default function ChatWindow({ currentChatUser }) {
   const [chatRoom, setChatRoom] = useState(null);
   const [chatLoading, setChatLoading] = useState(true);
@@ -23,7 +24,7 @@ export default function ChatWindow({ currentChatUser }) {
   useEffect(() => {
     let ws;
     if (chatRoom) {
-      ws = new WebSocket(`ws://localhost:3000/cable?token=${accessToken}`);
+      ws = new WebSocket(`${webSocketURL}?token=${accessToken}`);
       // Handle WebSocket connection open
       ws.onopen = () => {
         // Subscribe to the chat room
@@ -74,7 +75,7 @@ export default function ChatWindow({ currentChatUser }) {
   }, [messageData, currentSignedInUser.id]);
 
   const createChatRoom = async (user) => {
-    const url = "http://localhost:3000/api/v1/chat_rooms";
+    const url = endpoints.chatRooms;
     const currentUser = userData.current_user;
     const body = {
       chat_room: {
@@ -96,7 +97,7 @@ export default function ChatWindow({ currentChatUser }) {
   };
 
   const fetchMessagesInChat = async (chatRoom) => {
-    const url = `http://localhost:3000/api/v1/messages?chat_room_id=${chatRoom.id}`;
+    const url = `${endpoints.messages}?chat_room_id=${chatRoom.id}`;
     const response = await fetch(url);
     if (!response.ok) {
       console.error("Failed to save message");
@@ -118,7 +119,7 @@ export default function ChatWindow({ currentChatUser }) {
       sender_id: currentSignedInUser.id,
     };
 
-    const url = "http://localhost:3000/api/v1/messages";
+    const url = endpoints.messages;
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
