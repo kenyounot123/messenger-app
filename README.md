@@ -1,24 +1,23 @@
-# README
+# Messenger App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project is a simple web-based messaging app with responsive mobile design that allows users to send messages to each other. Users can create and customize their profiles, authorize their accounts, and engage in one-on-one conversations with real time updates.
 
-Things you may want to cover:
+# Deployed live here
 
-* Ruby version
+- [Link here](https://messenger-app-0vcf.onrender.com)
 
-* System dependencies
+# Technologies Used
 
-* Configuration
+- React and Vite for frontend
+- Ruby on Rails for backend
+- Active cable for Real-time messaing and Websocket integration
+- Devise-api gem for user authentication using tokens
+- Deployed using Render
+- ChakraUI for frontend component library
 
-* Database creation
+# Future updates/implementations
 
-* Database initialization
+- Sending images in chat
+- Updating user profiles
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Both of these can be implemented using Active Storage in Rails
