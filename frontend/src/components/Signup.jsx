@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { authEndPoints } from "../helpers/apiEndpoints";
-import { FlashMessage } from "./FlashMessage";
+import FlashMessage from "./FlashMessage";
 
 export default function SignupForm({ setFormAuth }) {
   const [errorMsg, setErrorMsg] = useState("");

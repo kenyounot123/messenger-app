@@ -110,16 +110,6 @@ export default function SigninForm({ setFormAuth }) {
           Log in as Guest{" "}
         </button>
       </form>
-      <div className="flex gap-[12px] justify-center mt-1 w-full">
-        <button className="text-white py-1 bg-messenger-blue rounded-md w-[24%]">
-          {" "}
-          Github{" "}
-        </button>
-        <button className="text-white py-1 bg-messenger-blue rounded-md w-[24%]">
-          {" "}
-          Google{" "}
-        </button>
-      </div>
       <p className="text-slate-700 mt-5">
         Dont have an account?{" "}
         <button
