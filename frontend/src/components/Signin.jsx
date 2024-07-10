@@ -3,9 +3,11 @@ import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "./UserContext";
 import { authEndPoints } from "../helpers/apiEndpoints";
+import FlashMessage from "./FlashMessage";
 export default function SigninForm({ setFormAuth }) {
   const navigate = useNavigate();
   const { setUserSignIn } = useContext(UserContext);
+  const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -34,10 +36,10 @@ export default function SigninForm({ setFormAuth }) {
         localStorage.setItem("token", data.token); // Save the token in local storage
         setUserSignIn((prev) => prev + 1); // Trigger a re-fetch in the UserProvider
       } else {
-        console.error("Failed to sign in as a guest.");
+        setErrorMsg("Failed to sign in as a guest.");
       }
     } catch (error) {
-      console.error("Error during guest sign-in:", error);
+      setErrorMsg("Error during guest sign-in:", error);
     }
   };
 
@@ -65,11 +67,14 @@ export default function SigninForm({ setFormAuth }) {
       navigate("/home");
     } else {
       const errorResult = await response.json();
-      console.error("Error:", errorResult);
+      setErrorMsg(errorResult.error_description);
     }
   };
   return (
     <>
+      {errorMsg && (
+        <FlashMessage errorMessage={errorMsg} setErrorMessage={setErrorMsg} />
+      )}
       <form onSubmit={handleSignIn} className="flex w-1/2 flex-col">
         <label className="text-white" htmlFor="email">
           Email

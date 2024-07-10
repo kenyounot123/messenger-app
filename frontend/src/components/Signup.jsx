@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { authEndPoints } from "../helpers/apiEndpoints";
+import { FlashMessage } from "./FlashMessage";
 
 export default function SignupForm({ setFormAuth }) {
+  const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,11 +20,11 @@ export default function SignupForm({ setFormAuth }) {
     const { name, email, password, confirmPassword } = formData;
 
     if (!name || !email || !password || !confirmPassword) {
-      alert("Empty field");
+      setErrorMsg("Empty field");
       return;
     }
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setErrorMsg("Passwords do not match");
       return;
     }
 
@@ -49,10 +50,10 @@ export default function SignupForm({ setFormAuth }) {
         setFormAuth("login");
       } else {
         const errorResult = await response.json();
-        console.error("Error:", errorResult);
+        setErrorMsg(errorResult.error_description);
       }
     } catch (error) {
-      console.error("Error:", error);
+      setErrorMsg("Error:", error);
     }
   };
 
@@ -62,6 +63,9 @@ export default function SignupForm({ setFormAuth }) {
   };
   return (
     <>
+      {errorMsg && (
+        <FlashMessage errorMessage={errorMsg} setErrorMessage={setErrorMsg} />
+      )}
       <form onSubmit={onSubmit} className="flex w-1/2 flex-col">
         <label className="text-white" htmlFor="name">
           Username
