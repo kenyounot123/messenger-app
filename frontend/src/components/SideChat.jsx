@@ -8,11 +8,13 @@ function PersonalChat({ user, onClick }) {
       className="m-5 p-2 text-xs flex gap-5 border-b rounded-md hover:bg-slate-200"
     >
       <UserAvatar name={user.name} size={"sm"} />
-      <div className="grid grid-cols-5">
+      <div className="flex flex-col grow">
         {/* user.name */}
-        <h1 className="text-nowrap font-bold col-span-2">{user.name}</h1>
-        {/* user.message.lastSent */}
-        <p className="text-nowrap text-end col-start-6">10:14am</p>
+        <div className="flex justify-between">
+          <h1 className="text-nowrap font-bold">{user.name}</h1>
+          {/* user.message.lastSent */}
+          <p className="text-nowrap text-end">10:14am</p>
+        </div>
         {/* user's chatroom latest message */}
         <p className="text-nowrap col-start-1 col-span-3">New message !</p>
       </div>
