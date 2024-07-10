@@ -8,7 +8,10 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     # Change this to allow what ip to connect to our server
+    # This is for production 
     origins "https://messenger-app-1-gtfa.onrender.com"
+
+    # origins "*"
 
     resource "*",
       headers: :any,
