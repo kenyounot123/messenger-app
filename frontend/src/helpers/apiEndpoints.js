@@ -1,8 +1,10 @@
-const AUTH_URL =
-  import.meta.env.VITE_AUTH_API_BASE_URL ||
-  "http://localhost:3000/users/tokens";
-const BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1";
+const isDevelopment = import.meta.env.MODE === "development";
+const AUTH_URL = isDevelopment
+  ? "http://localhost:3000/users/tokens"
+  : import.meta.env.VITE_AUTH_API_BASE_URL;
+const BASE_URL = isDevelopment
+  ? "http://localhost:3000/api/v1"
+  : import.meta.env.VITE_API_BASE_URL;
 
 const authEndPoints = {
   signUp: `${AUTH_URL}/sign_up`,
@@ -15,7 +17,8 @@ const endpoints = {
   messages: `${BASE_URL}/messages`,
 };
 
-const webSocketURL =
-  import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:3000/cable";
+const webSocketURL = isDevelopment
+  ? "ws://localhost:3000/cable"
+  : import.meta.env.VITE_WEBSOCKET_URL;
 
 export { authEndPoints, endpoints, webSocketURL };

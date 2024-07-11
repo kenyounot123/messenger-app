@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useRef } from "react";
 import FlashMessage from "./FlashMessage";
-import { authEndPoints, endpoints } from "../helpers/apiEndpoints";
+import { endpoints } from "../helpers/apiEndpoints";
 
 const UserContext = createContext();
 
@@ -13,7 +13,6 @@ const UserProvider = ({ children }) => {
   const firstUpdate = useRef(true);
 
   async function fetchData() {
-    console.log(endpoints.users);
     const token = localStorage.getItem("token");
     const url = endpoints.users;
 
@@ -26,7 +25,6 @@ const UserProvider = ({ children }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setUserData(data);
         setIsLoggedIn(true);
       } else if (response.status === 401) {
@@ -34,7 +32,7 @@ const UserProvider = ({ children }) => {
         // setErrorMessage("Your session has expired. Please sign in again.");
       }
     } catch (error) {
-      console.log("Error fetching user data: ", error);
+      setErrorMessage("Error fetching user data: ", error);
     } finally {
       setLoading(false);
     }
